@@ -6,7 +6,6 @@ import { styles } from './styles';
 type Props =  {
     title: string;
     subtitle: string;
-    
 }
 
 export function ListHeader({
@@ -23,5 +22,5 @@ export function ListHeader({
                 { subtitle }
             </Text>
         </View>      
-    );
+    )
 }
