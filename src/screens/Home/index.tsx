@@ -34,7 +34,55 @@ export function Home (){
             id: '2',
             guild: {
                 id: '1',
-                name: 'Lendários',
+                name: 'Fifa',
+                icon: null,
+                owner: true
+            },
+            category: '2',
+            date: '22/06 às 20:40h',
+            description: 'É hoje que vamos chegar ao challenger sem perder uma partida da md10'
+        },
+        {
+            id: '3',
+            guild: {
+                id: '1',
+                name: 'Battlefield 4',
+                icon: null,
+                owner: true
+            },
+            category: '2',
+            date: '22/06 às 20:40h',
+            description: 'É hoje que vamos chegar ao challenger sem perder uma partida da md10'
+        },
+        {
+            id: '4',
+            guild: {
+                id: '1',
+                name: 'FarCry 3',
+                icon: null,
+                owner: true
+            },
+            category: '2',
+            date: '22/06 às 20:40h',
+            description: 'É hoje que vamos chegar ao challenger sem perder uma partida da md10'
+        },
+        {
+            id: '5',
+            guild: {
+                id: '1',
+                name: 'CS GO',
+                icon: null,
+                owner: true
+            },
+            category: '2',
+            date: '22/06 às 20:40h',
+            description: 'É hoje que vamos chegar ao challenger sem perder uma partida da md10'
+        },
+        {
+            id: '6',
+            guild: {
+                id: '1',
+                name: 'Euro Truck',
                 icon: null,
                 owner: true
             },
@@ -68,27 +116,26 @@ export function Home (){
                     categorySelected={category}
                     setCategory={handleCategorySelect}
                 />
-                <View style={styles.content}>
-                    <ListHeader 
-                        title="Partidas Agendadas"
-                        subtitle="Total 6"
-                    />
-
-                    <FlatList 
-                        data={appointments}
-                        keyExtractor={item => item.id}
-                        renderItem={({ item }) => (
-                            <Appointment 
-                                data={item}
-                                onPress={handleAppointmentDetails}
-                            />
-                        )}
-                        ItemSeparatorComponent={ () => <ListDivider /> }
-                        style={styles.matches}
-                        showsVerticalScrollIndicator={false}
-                    />
-                </View>           
+              
+                <ListHeader 
+                    title="Partidas Agendadas"
+                    subtitle="Total 6"
+                />  
+                
             </View>
+            <FlatList 
+                data={appointments}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => (
+                    <Appointment 
+                        data={item}
+                        onPress={handleAppointmentDetails}
+                    />
+                )}
+                ItemSeparatorComponent={ () => <ListDivider /> }
+                style={styles.matches}
+                showsVerticalScrollIndicator={false}
+            />
         </Background>     
     );
 }
