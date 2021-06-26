@@ -9,11 +9,15 @@ import { useNavigation } from '@react-navigation/native';
 import { Background } from '../../components/Background';
 import { ButtonIcon } from '../../components/ButtonIcon';
 
+import { useAuth } from '../../hooks/auth';
+
 import IllustrationImg from '../../assets/illustration.png'
 import { styles } from './styles';
 
 export function SignIn (){
     const navigation = useNavigation();
+
+    const { user } = useAuth();
     
     function handleSignIn() {
         navigation.navigate('Home');
