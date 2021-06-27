@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Fontisto } from '@expo/vector-icons';
+import * as Linking from 'expo-linking';
 
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { View, ImageBackground, Text, FlatList, Alert, Share, Platform } from 'react-native';
@@ -59,9 +60,14 @@ export function AppointmentDetails() {
         });
     }
 
+    function handleOpenGuild(){
+        Linking.openURL(widget.instant_invite = 'https://discord.gg/frKXhpku');
+    }
+
     useEffect(() => {
         fecthGuildWidget();
     }, []);
+
     return(
         <Background>
             <Header 
@@ -113,9 +119,16 @@ export function AppointmentDetails() {
                 </>
             }
 
-            <View style={styles.footer}>
-                <ButtonIcon title="Entrar na partida" />
-            </View>
+            {
+                guildSelected.guild.owner &&
+                <View style={styles.footer}>
+                    <ButtonIcon 
+                        title="Entrar na partida" 
+                        onPress={handleOpenGuild}
+                    />
+                </View>
+            }
+            
         </Background>
     )
 }
