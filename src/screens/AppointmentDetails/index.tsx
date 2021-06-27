@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Fontisto } from '@expo/vector-icons';
 
 import { BorderlessButton } from 'react-native-gesture-handler';
-import { View, ImageBackground, Text, FlatList } from 'react-native';
+import { View, ImageBackground, Text, FlatList, Alert } from 'react-native';
 
 import { Background } from '../../components/Background';
 import { ListHeader } from '../../components/ListHeader';
 import { Header } from '../../components/Header';
-import { Member } from '../../components/Member';
+import { Member, MemberProps } from '../../components/Member';
 import { ListDivider } from '../../components/ListDivider';
 import { ButtonIcon } from '../../components/ButtonIcon';
 
@@ -16,36 +16,41 @@ import BannerImg from '../../assets/banner.png';
 import { styles } from './styles';
 import { useRoute } from '@react-navigation/native';
 import { AppointmentProps } from '../../components/Appointment';
+import { api } from '../../services/api';
+import { Load } from '../../components/Load';
 
 type Params = {
     guildSelected: AppointmentProps
 }
 
+type GuildWidget = {
+    id: string;
+    name: string;
+    instant_invite: string;
+    members: MemberProps[];
+}
+
 export function AppointmentDetails() {
+    const [widget, setWidget] = useState<GuildWidget>({} as GuildWidget);
+    const [loading, setLoading] = useState(true);
+
     const route = useRoute();
     const { guildSelected } = route.params as Params;
 
-    
-    const members = [
-        {
-            id: '1',
-            username: 'Mateus',
-            avatar_url: 'https://github.com/Mateusp23.png',
-            status: 'online'
-        },
-        {
-            id: '2',
-            username: 'João Lucas',
-            avatar_url: 'https://github.com/joao-lusa.png',
-            status: 'online'
-        },
-        {
-            id: '3',
-            username: 'Otavio Borges',
-            avatar_url: 'https://github.com/otavioborgsm.png',
-            status: 'offline'
-        }
-    ]
+    async function fecthGuildWidget() {
+        try{
+            const response = await api.get(`/guilds/${guildSelected.guild.id}/widget.json`)
+            setWidget(response.data);
+        } catch {
+            Alert.alert('Verifique as configurações do servidor. Será que o widget está habilitado?');
+        } finally{
+            setLoading(false);
+        }        
+    }
+
+    useEffect(() => {
+        fecthGuildWidget();
+    }, []);
     return(
         <Background>
             <Header 
@@ -75,21 +80,26 @@ export function AppointmentDetails() {
                     </Text>
                 </View>
             </ImageBackground>
+            
+            {
+                loading ? <Load /> :
+                <>
+                    <ListHeader
+                        title="Jogadores"
+                        subtitle={`Total ${widget.members.length}`}
+                    />
 
-            <ListHeader
-                title="Jogadores"
-                subtitle="Total 3"
-            />
-
-            <FlatList
-                data={members}
-                keyExtractor={item => item.id}
-                renderItem={({ item }) => (
-                    <Member data={item} />
-                )}
-                ItemSeparatorComponent={() => <ListDivider isCentered />}
-                style={styles.members}
-            />
+                    <FlatList
+                        data={widget.members}
+                        keyExtractor={item => item.id}
+                        renderItem={({ item }) => (
+                            <Member data={item} />
+                        )}
+                        ItemSeparatorComponent={() => <ListDivider isCentered />}
+                        style={styles.members}
+                    />
+                </>
+            }
 
             <View style={styles.footer}>
                 <ButtonIcon title="Entrar na partida" />
